@@ -17,28 +17,39 @@ namespace SchoolMealNotification.Manager
     {
         public T webRequest<T>(QParamModel[] query, string resource)
         {
-            WebClient webClient = new WebClient();
-            webClient.Encoding = Encoding.UTF8;
+            T result = default(T);
 
-            string uri = Settings.Default.apiUri + resource;
-            if (query != null)
+            try
             {
-                uri += "?";
-                foreach (QParamModel qParam in query)
+                WebClient webClient = new WebClient();
+                webClient.Encoding = Encoding.UTF8;
+
+                string uri = Settings.Default.apiUri + resource;
+                if (query != null)
                 {
-                    uri += qParam.key + "=" + qParam.value;
-                    // 마지막 쿼리가 아니라면 구분자 추가
-                    if (query.GetValue(query.Length - 1) != qParam)
+                    uri += "?";
+                    foreach (QParamModel qParam in query)
                     {
-                        uri += "&";
+                        uri += qParam.key + "=" + qParam.value;
+                        // 마지막 쿼리가 아니라면 구분자 추가
+                        if (query.GetValue(query.Length - 1) != qParam)
+                        {
+                            uri += "&";
+                        }
                     }
                 }
-            }
 
-            Stream data = webClient.OpenRead(uri);
-            StreamReader reader = new StreamReader(data);
-            JObject jObject = JObject.Parse(reader.ReadToEnd());
-            var result = JsonConvert.DeserializeObject<T>(jObject.ToString());
+                Stream data = webClient.OpenRead(uri);
+                StreamReader reader = new StreamReader(data);
+                JObject jObject = JObject.Parse(reader.ReadToEnd());
+                result = JsonConvert.DeserializeObject<T>(jObject.ToString());
+
+                return result;
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
             return result;
         }
