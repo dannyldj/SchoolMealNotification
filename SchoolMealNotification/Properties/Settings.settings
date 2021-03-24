@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SchoolMealNotification.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="apiUri" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://open.neis.go.kr/</Value>
+    </Setting>
+    <Setting Name="localCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">D10</Value>
+    </Setting>
+    <Setting Name="schoolCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">7240454</Value>
+    </Setting>
+    <Setting Name="apiKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">a1728e0fb21c42529b8db4b4a271879f</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
