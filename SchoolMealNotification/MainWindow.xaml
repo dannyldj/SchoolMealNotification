@@ -4,28 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolMealNotification"
+        xmlns:controls="clr-namespace:SchoolMealNotification.Control"
+        xmlns:viewmodel="clr-namespace:SchoolMealNotification.ViewModel"
         mc:Ignorable="d"
-        Title="SchoolMeal" Height="450" Width="800"
-        ResizeMode="CanMinimize" WindowStyle="ToolWindow">
+        Title="SchoolMeal" Height="450" Width="800" ResizeMode="CanMinimize"
+        WindowStyle="ToolWindow" BorderThickness="1" BorderBrush="Gray">
+    <Window.DataContext>
+        <viewmodel:MealViewModel/>
+    </Window.DataContext>
     <Window.Resources>
-        <!--DatePicker 날짜 포맷 스타일-->
-        <Style TargetType="{x:Type DatePickerTextBox}">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <TextBlock x:Name="tbDateViewer" Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd',
-                            RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <DataTemplate x:Key="ShortView" DataType="{x:Type viewmodel:MealViewModel}">
+            <controls:ShortViewControl/>
+        </DataTemplate>
+        <DataTemplate x:Key="DetailView" DataType="{x:Type viewmodel:MealViewModel}">
+            <controls:DetailViewControl/>
+        </DataTemplate>
     </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <ListView x:Name="MealListView" Grid.Column="0" ItemsSource="{Binding meals}"
+        <ContentControl Content="{Binding}">
+            <ContentControl.Style>
+                <Style TargetType="{x:Type ContentControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding viewMode}" Value="0">
+                            <Setter Property="ContentTemplate" Value="{StaticResource ShortView}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding viewMode}" Value="1">
+                            <Setter Property="ContentTemplate" Value="{StaticResource DetailView}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+        <!--<ListView x:Name="MealListView" Grid.Column="0" ItemsSource="{Binding meals}"
                   ScrollViewer.CanContentScroll="False">
             <ListView.View>
                 <GridView>
@@ -36,11 +51,20 @@
                     <GridViewColumn Header="영양소" DisplayMemberBinding="{Binding NTR_INFO}"/>
                 </GridView>
             </ListView.View>
-        </ListView>
+        </ListView>-->
         <StackPanel Grid.Column="1">
             <TextBlock HorizontalAlignment="Center">날짜</TextBlock>
-            <DatePicker x:Name="dpDateInput" SelectedDate="{Binding dateInput}"/>
+            <DatePicker x:Name="dpDateInput" SelectedDate="{Binding dateInput}">
+                <DatePicker.Resources>
+                    <Style TargetType="{x:Type DatePickerTextBox}"
+                           BasedOn="{StaticResource dpFormatChanger}"/>
+                </DatePicker.Resources>
+            </DatePicker>
             <Button x:Name="btnLoad" Command="{Binding loadCommand}">불러오기</Button>
+            <ToggleButton x:Name="tbtnViewMode" Content="자세히" 
+                          Command="{Binding switchViewCommand}"/>
+            <!--<controls:ToggleSwitchControl x:Name="tscViewMode" Width="70" HorizontalAlignment="Right"
+                                          Style="{StaticResource ToggleSwitchDisplayStyle}"/>-->
         </StackPanel>
         <TextBlock Grid.Column="1" Width="90" VerticalAlignment="Bottom"
                    Text="* 표시된 메뉴는 알레르기 유발 가능성 있음" TextWrapping="Wrap"/>

@@ -2,8 +2,25 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SchoolMealNotification"
+             xmlns:controls="clr-namespace:SchoolMealNotification.Control"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!--DatePicker 날짜 포맷 스타일-->
+        <!--TargetType="{x:Type DatePickerTextBox}"-->
+        <Style x:Key="dpFormatChanger" TargetType="{x:Type DatePickerTextBox}">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <TextBlock x:Name="tbDateViewer" Text="{Binding Path=SelectedDate, StringFormat='yyyy/MM/dd', 
+                            RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ToggleSwitchDisplayStyle" TargetType="controls:ToggleSwitchControl">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,3,0,0"/>
+        </Style>
     </Application.Resources>
 </Application>

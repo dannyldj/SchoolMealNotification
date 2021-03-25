@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace SchoolMealNotification.Manager
 {
-    class WebManager
+    public class WebManager
     {
         public T webRequest<T>(QParamModel[] query, string resource)
         {

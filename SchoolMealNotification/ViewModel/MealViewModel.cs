@@ -3,28 +3,46 @@ using SchoolMealNotification.Manager;
 using SchoolMealNotification.Model;
 using SchoolMealNotification.Properties;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace SchoolMealNotification.ViewModel
 {
-    class MealViewModel : INotifyPropertyChanged
+    public class MealViewModel : INotifyPropertyChanged
     {
         WebManager webManager = new WebManager();
-        MealModel mealList = new MealModel();
+        MealModel mealModel = new MealModel();
+
+        private int _viewMode;
+
+        public int viewMode
+        {
+            get { return _viewMode; }
+            set
+            {
+                _viewMode = value;
+                OnPropertyChanged("viewMode");
+            }
+        }
 
         public static string dateFormat = "yyyyMMdd";
         public DateTime dateInput { get; set; }
-        public ICommand loadCommand { get; set; }
+        public DelegateCommand loadCommand { get; set; }
+        public ICommand switchViewCommand { get; }
         public ObservableCollection<Row> meals { get; set; }
         public MealViewModel()
         {
+            viewMode = 0;
+
             loadCommand = new DelegateCommand(onLoad, canLoad);
+            switchViewCommand = new DelegateCommand(onSwitchView);
             meals = new ObservableCollection<Row>();
             dateInput = DateTime.Today;
         }
@@ -38,13 +56,13 @@ namespace SchoolMealNotification.ViewModel
             queryParams[2] = new QParamModel { key = "ATPT_OFCDC_SC_CODE", value = Settings.Default.localCode };
             queryParams[3] = new QParamModel { key = "SD_SCHUL_CODE", value = Settings.Default.schoolCode };
             queryParams[4] = new QParamModel { key = "MLSV_YMD", value = dateInput.ToString(dateFormat) };
-            mealList = webManager.webRequest<MealModel>(queryParams, "hub/mealServiceDietInfo");
+            mealModel = webManager.webRequest<MealModel>(queryParams, "hub/mealServiceDietInfo");
 
             // 급식이 없는 날의 정보를 요청할 경우 예외 처리
             try
             {
                 // 하나만 호출했지만 원인불명으로 mealServiceDietInfo 리스트가 나누어져 각각 head와 row를 포함함
-                foreach (Row row in mealList.mealServiceDietInfo[1].row)
+                foreach (Row row in mealModel.mealServiceDietInfo[1].row)
                 {
                     if (row != null)
                     {
@@ -76,11 +94,17 @@ namespace SchoolMealNotification.ViewModel
             return isValid;
         }
 
+        private void onSwitchView()
+        {
+            bool temp = !Convert.ToBoolean(viewMode);
+            viewMode = Convert.ToInt32(temp);
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void NotifyPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged(string propName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }
