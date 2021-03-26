@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace SchoolMealNotification.Control
         SolidColorBrush On = new SolidColorBrush(Colors.Gray);
 
         private bool _toggled;
-        public bool Toggled
+        public bool toggled
         {
             get => _toggled;
             set
@@ -39,37 +40,30 @@ namespace SchoolMealNotification.Control
         public ToggleSwitchControl()
         {
             InitializeComponent();
-            Toggled = false;
+            toggled = false;
         }
 
         private void SetToggledSwitch()
         {
-            if (_toggled)
+            if (toggled)
             {
                 bdBack.Background = On;
                 bdBack.BorderThickness = new Thickness(0);
                 rtDot.Margin = RightSide;
                 rtDot.Fill = new SolidColorBrush(Colors.White);
-                tbStatus.Text = "자세히";
             }
             else
             {
                 bdBack.Background = Off;
-                bdBack.BorderThickness = new Thickness(5);
+                bdBack.BorderThickness = new Thickness(4);
                 rtDot.Margin = LeftSide;
                 rtDot.Fill = new SolidColorBrush(Colors.Black);
-                tbStatus.Text = "간략히";
             }
         }
 
-        private void bdBack_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void tbtnViewChange_Click(object sender, RoutedEventArgs e)
         {
-            Toggled = !Toggled;
-        }
-
-        private void rtDot_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Toggled = !Toggled;
+            toggled = !toggled;
         }
     }
 }

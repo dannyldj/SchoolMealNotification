@@ -28,7 +28,19 @@ namespace SchoolMealNotification.ViewModel
             set
             {
                 _viewMode = value;
-                OnPropertyChanged("viewMode");
+                onPropertyChanged("viewMode");
+            }
+        }
+
+        private string _viewStatus;
+
+        public string viewStatus
+        {
+            get { return _viewStatus; }
+            set 
+            {
+                _viewStatus = value;
+                onPropertyChanged("viewStatus");
             }
         }
 
@@ -40,6 +52,7 @@ namespace SchoolMealNotification.ViewModel
         public MealViewModel()
         {
             viewMode = 0;
+            viewStatus = "간략히";
 
             loadCommand = new DelegateCommand(onLoad, canLoad);
             switchViewCommand = new DelegateCommand(onSwitchView);
@@ -98,11 +111,20 @@ namespace SchoolMealNotification.ViewModel
         {
             bool temp = !Convert.ToBoolean(viewMode);
             viewMode = Convert.ToInt32(temp);
+
+            if(viewMode == 0)
+            {
+                viewStatus = "간략히";
+            }
+            else
+            {
+                viewStatus = "자세히";
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propName)
+        protected virtual void onPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }

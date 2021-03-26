@@ -13,20 +13,25 @@
         <viewmodel:MealViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate x:Key="ShortView" DataType="{x:Type viewmodel:MealViewModel}">
+        <DataTemplate x:Key="ShortView">
             <controls:ShortViewControl/>
         </DataTemplate>
-        <DataTemplate x:Key="DetailView" DataType="{x:Type viewmodel:MealViewModel}">
+        <DataTemplate x:Key="DetailView">
             <controls:DetailViewControl/>
         </DataTemplate>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <ContentControl Content="{Binding}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ContentControl Grid.Column="0" Grid.RowSpan="1" Content="{Binding}">
             <ContentControl.Style>
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
@@ -40,18 +45,9 @@
                 </Style>
             </ContentControl.Style>
         </ContentControl>
-        <!--<ListView x:Name="MealListView" Grid.Column="0" ItemsSource="{Binding meals}"
-                  ScrollViewer.CanContentScroll="False">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header=" " DisplayMemberBinding="{Binding MMEAL_SC_NM}"/>
-                    <GridViewColumn Header="메뉴" DisplayMemberBinding="{Binding DDISH_NM}"/>
-                    <GridViewColumn Header="원산지" DisplayMemberBinding="{Binding ORPLC_INFO}"/>
-                    <GridViewColumn Header="칼로리" DisplayMemberBinding="{Binding CAL_INFO}"/>
-                    <GridViewColumn Header="영양소" DisplayMemberBinding="{Binding NTR_INFO}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
+        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="4,0,0,3" 
+                   FontSize="10" Text="* 표시된 메뉴는 알레르기 유발 가능성 있음"/>
+
         <StackPanel Grid.Column="1">
             <TextBlock HorizontalAlignment="Center">날짜</TextBlock>
             <DatePicker x:Name="dpDateInput" SelectedDate="{Binding dateInput}">
@@ -60,13 +56,10 @@
                            BasedOn="{StaticResource dpFormatChanger}"/>
                 </DatePicker.Resources>
             </DatePicker>
-            <Button x:Name="btnLoad" Command="{Binding loadCommand}">불러오기</Button>
-            <ToggleButton x:Name="tbtnViewMode" Content="자세히" 
-                          Command="{Binding switchViewCommand}"/>
-            <!--<controls:ToggleSwitchControl x:Name="tscViewMode" Width="70" HorizontalAlignment="Right"
-                                          Style="{StaticResource ToggleSwitchDisplayStyle}"/>-->
+            <Button x:Name="btnLoad" Width="60" Margin="0,3,0,0"
+                    Content="불러오기" Command="{Binding loadCommand}"/>
+            <controls:ToggleSwitchControl x:Name="tscViewMode" Margin="0,5,3,0"
+                                          Width="63" HorizontalAlignment="Right"/>
         </StackPanel>
-        <TextBlock Grid.Column="1" Width="90" VerticalAlignment="Bottom"
-                   Text="* 표시된 메뉴는 알레르기 유발 가능성 있음" TextWrapping="Wrap"/>
     </Grid>
 </Window>

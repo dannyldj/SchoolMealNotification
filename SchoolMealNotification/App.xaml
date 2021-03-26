@@ -6,7 +6,6 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <!--DatePicker 날짜 포맷 스타일-->
-        <!--TargetType="{x:Type DatePickerTextBox}"-->
         <Style x:Key="dpFormatChanger" TargetType="{x:Type DatePickerTextBox}">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -17,10 +16,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ToggleSwitchDisplayStyle" TargetType="controls:ToggleSwitchControl">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,3,0,0"/>
+
+        <!--tbtn 하이라이트 삭제-->
+        <Style x:Key="btnInvisible" TargetType="ToggleButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>
