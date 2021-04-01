@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView ItemsSource="{Binding meals}" ScrollViewer.CanContentScroll="False">
+        <ListView ItemsSource="{Binding ListMeal}" ScrollViewer.CanContentScroll="False">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header=" " DisplayMemberBinding="{Binding MMEAL_SC_NM}"/>

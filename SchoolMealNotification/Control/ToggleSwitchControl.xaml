@@ -8,14 +8,12 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="tbViewStatus" Margin="0,-1,2,0" 
-                   Grid.Column="0" VerticalAlignment="Top" 
-                   FontSize="9" FontWeight="SemiBold" Text="{Binding viewStatus}"/>
-        <Viewbox Grid.Column="1">
-            <ToggleButton Command="{Binding switchViewCommand}" Click="tbtnViewChange_Click"
+        
+        <Viewbox Grid.Column="0">
+            <ToggleButton Command="{Binding SwitchViewCommand}" Click="tbtnViewChange_Click"
                           Style="{StaticResource btnInvisible}">
                 <Grid>
                     <Border x:Name="bdBack" Margin="0" 
@@ -30,5 +28,8 @@
                 </Grid>
             </ToggleButton>
         </Viewbox>
+        <TextBlock x:Name="tbViewStatus" Margin="0,-1,2,0" 
+                   Grid.Column="1" VerticalAlignment="Top" 
+                   FontSize="9" FontWeight="SemiBold" Text="{Binding ViewStatus}"/>
     </Grid>
 </UserControl>

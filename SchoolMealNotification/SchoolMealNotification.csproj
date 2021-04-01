@@ -73,7 +73,12 @@
     </Compile>
     <Compile Include="Manager\WebManager.cs" />
     <Compile Include="Model\QParamModel.cs" />
+    <Compile Include="Model\SchoolModel.cs" />
     <Compile Include="ViewModel\MealViewModel.cs" />
+    <Compile Include="ViewModel\SchoolViewModel.cs" />
+    <Compile Include="View\SchoolView.xaml.cs">
+      <DependentUpon>SchoolView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Control\DetailViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,6 +103,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\SchoolView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\MealModel.cs" />

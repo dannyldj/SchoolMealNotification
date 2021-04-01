@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:SchoolMealNotification"
         xmlns:controls="clr-namespace:SchoolMealNotification.Control"
         xmlns:viewmodel="clr-namespace:SchoolMealNotification.ViewModel"
+        xmlns:properties="clr-namespace:SchoolMealNotification.Properties"
         mc:Ignorable="d"
-        Title="SchoolMeal" Height="450" Width="800" ResizeMode="CanMinimize"
-        WindowStyle="ToolWindow" BorderThickness="1" BorderBrush="Gray">
+        Title="급식 조회 프로그램" Height="515" Width="800" ResizeMode="CanMinimize"
+        WindowStyle="ThreeDBorderWindow" BorderThickness="1" BorderBrush="Gray">
     <Window.DataContext>
         <viewmodel:MealViewModel/>
     </Window.DataContext>
@@ -35,31 +36,36 @@
             <ContentControl.Style>
                 <Style TargetType="{x:Type ContentControl}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding viewMode}" Value="0">
+                        <DataTrigger Binding="{Binding ViewMode}" Value="0">
                             <Setter Property="ContentTemplate" Value="{StaticResource ShortView}" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding viewMode}" Value="1">
+                        <DataTrigger Binding="{Binding ViewMode}" Value="1">
                             <Setter Property="ContentTemplate" Value="{StaticResource DetailView}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>
         </ContentControl>
-        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="4,0,0,3" 
+        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="4,0,0,3" 
                    FontSize="10" Text="* 표시된 메뉴는 알레르기 유발 가능성 있음"/>
+        <controls:ToggleSwitchControl x:Name="tscViewMode" Width="63" Margin="0,3,0,3" 
+                                      Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
+
 
         <StackPanel Grid.Column="1">
+            <TextBox Width="110" TextWrapping="Wrap" IsReadOnly="True"
+                     Text="{Binding Source={x:Static properties:Settings.Default}, Path=schoolName}"/>
+            <Button Width="60" Margin="0,3,0,30" Content="학교 변경"
+                    Click="btnChangeSchool"/>
             <TextBlock HorizontalAlignment="Center">날짜</TextBlock>
-            <DatePicker x:Name="dpDateInput" SelectedDate="{Binding dateInput}">
+            <DatePicker SelectedDate="{Binding DateInput}">
                 <DatePicker.Resources>
                     <Style TargetType="{x:Type DatePickerTextBox}"
                            BasedOn="{StaticResource dpFormatChanger}"/>
                 </DatePicker.Resources>
             </DatePicker>
-            <Button x:Name="btnLoad" Width="60" Margin="0,3,0,0"
-                    Content="불러오기" Command="{Binding loadCommand}"/>
-            <controls:ToggleSwitchControl x:Name="tscViewMode" Margin="0,5,3,0"
-                                          Width="63" HorizontalAlignment="Right"/>
+            <Button Width="60" Margin="0,3,0,0" Content="불러오기" 
+                    Command="{Binding LoadCommand}"/>
         </StackPanel>
     </Grid>
 </Window>

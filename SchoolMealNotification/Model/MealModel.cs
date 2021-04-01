@@ -2,26 +2,29 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolMealNotification.Model
+namespace SchoolMealNotification.Model.Meal
 {
     public class RESULT
     {
-        public string CODE { get; set; }
-        public string MESSAGE { get; set; }
+        [JsonProperty("CODE")]
+        public string code { get; set; }
+
+        [JsonProperty("MESSAGE")]
+        public string message { get; set; }
     }
 
     public class Head
     {
         // 원인불명으로 Null이 입력되는 경우 존재
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public int list_total_count { get; set; }
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public RESULT RESULT { get; set; }
+        [JsonProperty("list_total_count", NullValueHandling = NullValueHandling.Ignore)]
+        public int listTotalCount { get; set; }
+
+        [JsonProperty("RESULT", NullValueHandling = NullValueHandling.Ignore)]
+        public RESULT result { get; set; }
     }
 
     public class Row

@@ -1,0 +1,41 @@
+﻿<Window x:Class="SchoolMealNotification.View.SchoolView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:SchoolMealNotification.ViewModel"
+        xmlns:local="clr-namespace:SchoolMealNotification.View"
+        mc:Ignorable="d"
+        Title="학교 검색" Height="400" Width="300" ResizeMode="NoResize"
+        WindowStyle="ToolWindow" BorderThickness="1" BorderBrush="Gray">
+    <Window.DataContext>
+        <viewmodel:SchoolViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBox Height="30" Text="{Binding SearchingSchool}" Padding="5"/>
+            <Button Content="검색" Command="{Binding SearchCommand, 
+                UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+        
+        <ListView x:Name="lvSearchedSchool" Grid.Row="1" 
+                  SelectedItem="{Binding SelectedSchool}" 
+                  ItemsSource="{Binding ListSchool}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource gvHeaderInvisible}">
+                    <GridViewColumn DisplayMemberBinding="{Binding LCTN_SC_NM}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding SCHUL_NM}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Grid.Row="2" Content="선택" Click="btnSelectClick"
+                Command="{Binding SelectCommand}"/>
+    </Grid>
+</Window>

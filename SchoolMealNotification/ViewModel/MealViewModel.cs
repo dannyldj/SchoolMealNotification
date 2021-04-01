@@ -1,6 +1,7 @@
 ﻿using Prism.Commands;
 using SchoolMealNotification.Manager;
 using SchoolMealNotification.Model;
+using SchoolMealNotification.Model.Meal;
 using SchoolMealNotification.Properties;
 using System;
 using System.Collections.Generic;
@@ -18,11 +19,10 @@ namespace SchoolMealNotification.ViewModel
     public class MealViewModel : INotifyPropertyChanged
     {
         WebManager webManager = new WebManager();
-        MealModel mealModel = new MealModel();
 
         private int _viewMode;
 
-        public int viewMode
+        public int ViewMode
         {
             get { return _viewMode; }
             set
@@ -34,7 +34,7 @@ namespace SchoolMealNotification.ViewModel
 
         private string _viewStatus;
 
-        public string viewStatus
+        public string ViewStatus
         {
             get { return _viewStatus; }
             set 
@@ -44,38 +44,47 @@ namespace SchoolMealNotification.ViewModel
             }
         }
 
-        public static string dateFormat = "yyyyMMdd";
-        public DateTime dateInput { get; set; }
-        public DelegateCommand loadCommand { get; set; }
-        public ICommand switchViewCommand { get; }
-        public ObservableCollection<Row> meals { get; set; }
-        public MealViewModel()
-        {
-            viewMode = 0;
-            viewStatus = "간략히";
+        private MealModel _mealModel;
 
-            loadCommand = new DelegateCommand(onLoad, canLoad);
-            switchViewCommand = new DelegateCommand(onSwitchView);
-            meals = new ObservableCollection<Row>();
-            dateInput = DateTime.Today;
+        public MealModel Meals
+        {
+            get { return _mealModel; }
+            set { _mealModel = value; }
         }
 
-        private void onLoad()
+        public static string dateFormat = "yyyyMMdd";
+        public DateTime DateInput { get; set; }
+        public ICommand LoadCommand { get; private set; }
+        public ICommand SwitchViewCommand { get; private set; }
+        public ObservableCollection<Row> ListMeal { get; set; }
+        public MealViewModel()
         {
-            meals.Clear();
+            ViewMode = 0;
+            ViewStatus = "간략히";
+            Meals = new MealModel();
+
+            LoadCommand = new DelegateCommand(OnLoad);
+            SwitchViewCommand = new DelegateCommand(OnSwitchView);
+            ListMeal = new ObservableCollection<Row>();
+            DateInput = DateTime.Today;
+        }
+
+        private void OnLoad()
+        {
+            ListMeal.Clear();
             QParamModel[] queryParams = new QParamModel[5];
             queryParams[0] = new QParamModel { key = "KEY", value = Settings.Default.apiKey };
             queryParams[1] = new QParamModel { key = "Type", value = "json" };
             queryParams[2] = new QParamModel { key = "ATPT_OFCDC_SC_CODE", value = Settings.Default.localCode };
             queryParams[3] = new QParamModel { key = "SD_SCHUL_CODE", value = Settings.Default.schoolCode };
-            queryParams[4] = new QParamModel { key = "MLSV_YMD", value = dateInput.ToString(dateFormat) };
-            mealModel = webManager.webRequest<MealModel>(queryParams, "hub/mealServiceDietInfo");
+            queryParams[4] = new QParamModel { key = "MLSV_YMD", value = DateInput.ToString(dateFormat) };
+            Meals = webManager.webRequest<MealModel>(queryParams, "mealServiceDietInfo");
 
             // 급식이 없는 날의 정보를 요청할 경우 예외 처리
             try
             {
                 // 하나만 호출했지만 원인불명으로 mealServiceDietInfo 리스트가 나누어져 각각 head와 row를 포함함
-                foreach (Row row in mealModel.mealServiceDietInfo[1].row)
+                foreach (Row row in Meals.mealServiceDietInfo[1].row)
                 {
                     if (row != null)
                     {
@@ -86,7 +95,7 @@ namespace SchoolMealNotification.ViewModel
                         row.ORPLC_INFO = row.ORPLC_INFO.Replace("<br/>", "\n");
                         row.CAL_INFO = row.CAL_INFO.Replace("<br/>", "\n");
                         row.NTR_INFO = row.NTR_INFO.Replace("<br/>", "\n");
-                        meals.Add(row);
+                        ListMeal.Add(row);
                     }
                 }
             }
@@ -95,30 +104,19 @@ namespace SchoolMealNotification.ViewModel
                 MessageBox.Show("급식 정보가 없습니다", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private bool canLoad()
+
+        private void OnSwitchView()
         {
-            bool isValid = dateInput.ToString(dateFormat).Length == 8;
+            bool temp = !Convert.ToBoolean(ViewMode);
+            ViewMode = Convert.ToInt32(temp);
 
-            if (!isValid)
+            if(ViewMode == 0)
             {
-                MessageBox.Show("Invalid Date", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return isValid;
-        }
-
-        private void onSwitchView()
-        {
-            bool temp = !Convert.ToBoolean(viewMode);
-            viewMode = Convert.ToInt32(temp);
-
-            if(viewMode == 0)
-            {
-                viewStatus = "간략히";
+                ViewStatus = "간략히";
             }
             else
             {
-                viewStatus = "자세히";
+                ViewStatus = "자세히";
             }
         }
 

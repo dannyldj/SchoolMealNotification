@@ -1,4 +1,5 @@
 ﻿using SchoolMealNotification.Control;
+using SchoolMealNotification.View;
 using SchoolMealNotification.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,13 @@ namespace SchoolMealNotification
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnChangeSchool(object sender, RoutedEventArgs e)
+        {
+            SchoolView schoolView = new SchoolView();
+            schoolView.Owner = this;
+            schoolView.ShowDialog();
         }
     }
 }

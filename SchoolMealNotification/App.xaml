@@ -32,5 +32,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="gvHeaderInvisible" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Height" Value="0"/>
+        </Style>
     </Application.Resources>
 </Application>

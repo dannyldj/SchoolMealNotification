@@ -23,31 +23,36 @@ namespace SchoolMealNotification.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://open.neis.go.kr/")]
-        public string apiUri {
-            get {
-                return ((string)(this["apiUri"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string localCode {
             get {
                 return ((string)(this["localCode"]));
             }
+            set {
+                this["localCode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string schoolCode {
+            get {
+                return ((string)(this["schoolCode"]));
+            }
+            set {
+                this["schoolCode"] = value;
+            }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7240454")]
-        public string schoolCode {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://open.neis.go.kr/hub/")]
+        public string apiUri {
             get {
-                return ((string)(this["schoolCode"]));
+                return ((string)(this["apiUri"]));
             }
         }
         
@@ -57,6 +62,18 @@ namespace SchoolMealNotification.Properties {
         public string apiKey {
             get {
                 return ((string)(this["apiKey"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string schoolName {
+            get {
+                return ((string)(this["schoolName"]));
+            }
+            set {
+                this["schoolName"] = value;
             }
         }
     }
